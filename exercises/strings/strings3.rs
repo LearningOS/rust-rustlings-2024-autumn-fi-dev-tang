@@ -3,21 +3,28 @@
 // Execute `rustlings hint strings3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// [psNote]: In writing this, I found it uses too much of the underlying rust lib.
 
 fn trim_me(input: &str) -> String {
     // TODO: Remove whitespace from both ends of a string!
-    ???
+    input.trim().to_string()
 }
 
 fn compose_me(input: &str) -> String {
     // TODO: Add " world!" to the string! There's multiple ways to do this!
-    ???
+    format!("{}{}", input, " world!")
 }
 
 fn replace_me(input: &str) -> String {
     // TODO: Replace "cars" in the string with "balloons"!
-    ???
+    let sentence = input;
+    let search_term = "cars";
+
+    if sentence.contains(search_term){
+        return sentence.replace(search_term, "balloons");
+    }else{
+        return sentence.to_string()
+    }
 }
 
 #[cfg(test)]
