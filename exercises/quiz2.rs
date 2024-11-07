@@ -20,7 +20,6 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
 
 pub enum Command {
     Uppercase,
@@ -32,11 +31,28 @@ mod my_module {
     use super::Command;
 
     // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
         // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
+        let mut output: Vec<String> = vec![];
         for (string, command) in input.iter() {
             // TODO: Complete the function body. You can do it!
+            match command {
+                Command::Uppercase => output.push(string.to_uppercase()),
+                Command::Trim => output.push(string.trim().to_string()),
+                Command::Append(size) => {
+                    /*
+                    这里回到最初的 mutable 和 immutable 问题，
+                    其中 (string, command) in input.iter() 是一个不可变引用，
+                    不可变引用上不能调用可变方法 push_str, 尝试使用 "push_str" 方法修改 "string" 会导致编译错误
+                    
+                     */
+                    let mut extended_string = string.clone();
+                    for _ in 0..*size {
+                        extended_string.push_str("bar");
+                    }
+                    output.push(extended_string.to_string());
+                },
+            }
         }
         output
     }
@@ -45,7 +61,7 @@ mod my_module {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
+    use crate::my_module::transformer;
     use super::Command;
 
     #[test]
