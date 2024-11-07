@@ -14,7 +14,6 @@
 // Execute `rustlings hint hashmaps3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::collections::HashMap;
 
@@ -39,7 +38,31 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         // will be the number of goals conceded from team_2, and similarly
         // goals scored by team_2 will be the number of goals conceded by
         // team_1.
+        /*
+        错误原因，这里需要进行一个加法的操作
+        
+        第一种情况，还没创建 team_1 的表项
+        此时 team_1 和 team_1 关心的球队，team_1 的分数都直接插入
+        第二种情况, 已经创建了 team_1 的表项
+        此时 team_1 的分数和 team_1 关心的球队的分数都要加上
+        其中这里 u8 由于是基本数据类型，所以不需要解引用的 *
+        */
+        
+        if let Some(team_info) = scores.get_mut(&team_1_name){
+            team_info.goals_scored += team_1_score;
+            team_info.goals_conceded += team_2_score;
+        }else{
+            scores.insert(team_1_name, Team{goals_scored: team_1_score, goals_conceded: team_2_score});
+        }
+    
+        if let Some(team_info) = scores.get_mut(&team_2_name){
+            team_info.goals_scored += team_2_score;
+            team_info.goals_conceded += team_1_score;
+        }else{
+            scores.insert(team_2_name, Team{goals_scored: team_2_score, goals_conceded: team_1_score});
+        }
     }
+
     scores
 }
 
