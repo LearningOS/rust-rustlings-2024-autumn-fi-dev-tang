@@ -3,8 +3,6 @@
 // Execute `rustlings hint errors4` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 #[derive(PartialEq, Debug)]
 struct PositiveNonzeroInteger(u64);
 
@@ -14,10 +12,30 @@ enum CreationError {
     Zero,
 }
 
+/**
+ * 一个更 rust 的写法，rigid 的要求就是尽量不要使用多个 if else 嵌套
+ * match value {
+ *  v if v > 0 => { PositiveNonzeroInteger(value as u64)}
+ *  0 => {Err(CreationErr::Zero)}
+ *  _ => {Err(CreationErr::Negative)}
+ * }
+ * 
+ * 感觉这里第一条的 v if v > 0, 称为条件守卫，跟 Haskell 里面的 guard | 非常相像
+ */
+
 impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
         // Hmm...? Why is this only returning an Ok value?
-        Ok(PositiveNonzeroInteger(value as u64))
+        if value > 0 {
+            Ok(PositiveNonzeroInteger(value as u64))
+        }else{
+            if value == 0 {
+                Err(CreationError::Zero)
+            }
+            else{
+                Err(CreationError::Negative)
+            }
+        }
     }
 }
 
