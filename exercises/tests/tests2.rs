@@ -6,12 +6,12 @@
 // Execute `rustlings hint tests2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn you_can_assert_eq() {
-        assert_eq!();
+        let exp_a = "I am a exp";
+        let exp_b = "I am a exp";
+        assert_eq!(exp_a, exp_b);
     }
 }
