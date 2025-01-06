@@ -18,11 +18,10 @@
 //
 // Execute `rustlings hint box1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 #[derive(PartialEq, Debug)]
 pub enum List {
-    Cons(i32, List),
+    Cons(i32, Box<List>),
     Nil,
 }
 
@@ -34,12 +33,18 @@ fn main() {
     );
 }
 
+/*
+Box 想要解决递归数据结构的内存使用问题。
+Cons(i32, List) 表示递归类型有无限的大小，
+List::Cons 的内存布局: i32, 4 字节， Box<List>, 指针大小，通常 8 字节
+
+*/
 pub fn create_empty_list() -> List {
-    todo!()
+    *Box::new(List::Nil)
 }
 
 pub fn create_non_empty_list() -> List {
-    todo!()
+    *Box::new(List::Cons(1, Box::new(List::Nil)))
 }
 
 #[cfg(test)]
