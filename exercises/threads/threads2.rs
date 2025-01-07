@@ -13,7 +13,6 @@ use std::thread;
 use std::time::Duration;
 use std::sync::Mutex;
 
-#[derive(Debug)]
 struct JobStatus {
     jobs_completed: u32,
 }
@@ -42,6 +41,6 @@ fn main() {
         // TODO: Print the value of the JobStatus.jobs_completed. Did you notice
         // anything interesting in the output? Do you have to 'join' on all the
         // handles?
-        println!("jobs completed {:?}", *status.lock().unwrap());
+        println!("jobs completed {}", status.lock().unwrap().jobs_completed);
     }
 }
