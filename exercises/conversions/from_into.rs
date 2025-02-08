@@ -40,10 +40,32 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        // 1. 第一步，需要判断对应的 string 是否有且只有一个逗号
+        // 如果有且只有一个逗号，执行后面的判断，否则直接返回 default
+        let comma_count = s.matches(',').count();
+        if comma_count != 1{
+            return Person::default();
+        }
+
+        // 2. 第二步，确认有且只有一个逗号后，转换前后两个部分
+        let parts: Vec<&str> = s.split(',').collect();
+        let (name_part, age_part) = (parts[0], parts[1]);
+
+        // 3. 判断 name 是否为空
+        if name_part.is_empty(){
+            return Person::default();
+        }
+
+        // 4. 转换 age 部分为 usize
+        match age_part.parse::<usize>(){
+            Ok(age) => Person{name: name_part.to_string(),
+                            age: age,
+            },
+            Err(_) => Person::default(),
+        }
     }
 }
 

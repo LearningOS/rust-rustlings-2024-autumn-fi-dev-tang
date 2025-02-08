@@ -31,7 +31,6 @@ enum ParsePersonError {
     ParseInt(ParseIntError),
 }
 
-// I AM NOT DONE
 
 // Steps:
 // 1. If the length of the provided string is 0, an error should be returned
@@ -51,7 +50,44 @@ enum ParsePersonError {
 
 impl FromStr for Person {
     type Err = ParsePersonError;
+    /*
+    回顾之前的一个知识点，type 的作用是创建类型别名
+    就是为了表达的简略和方便，使用 Err 来代替 ParsePersonError
+    下面的 Err 就当成是 ParsePersonError 来使用
+     */
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        // 0. 直接判断 Empty 类型
+        if s.is_empty() {
+            return Err(Self::Err::Empty);
+        }
+        // 1. 还是按照之前的逗号模式来
+        let comma_count = s.matches(',').count();
+        if comma_count != 1 {
+            return Err(Self::Err::BadLen);
+        }
+        // 2. 接下来逗号模式匹配结束，都是只有一个逗号的情况，字符串 name 和 age 部分的匹配
+        let parts: Vec<&str> = s.split(',').collect();
+        let (name_part, age_part) = (parts[0], parts[1]);
+        
+        match name_part {
+            "" => {
+                // name_part 是空字符串，测试后面第二部分的情况 
+                Err(Self::Err::NoName)
+            }
+            _ => {
+                match age_part.parse::<usize>() {
+                   Ok(age) => {
+                        Ok(Person{
+                            name: name_part.to_string(),
+                            age: age,
+                        })
+                   },
+                   Err(e) => {
+                        Err(Self::Err::ParseInt(e))
+                   }
+                }
+            }
+        }
     }
 }
 
